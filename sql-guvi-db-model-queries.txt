@@ -1,0 +1,95 @@
+create database guviDbdesign;
+
+use guvidbdesign;
+
+create table users(
+user_id int primary key, 
+user_name varchar(35), 
+user_email varchar(35), 
+password varchar(20)
+);
+
+create table languages(
+language_id int primary key,
+language_name varchar(30)
+);
+
+create table course(
+course_id int primary key,
+course_name varchar(30),
+course_description varchar(300),
+user_id int, 
+foreign key(user_id) references users(user_id)
+);
+
+create table batch(
+batch_id int primary key,
+batch_name varchar(30),
+batch_description varchar(300),
+language_id int,
+foreign key(language_id) references languages(language_id)
+);
+
+create table mentor(
+mentor_id int primary key, 
+user_id int, foreign key(user_id) references users(user_id),
+mentor_name varchar(30),
+batch_id int, foreign key(batch_id) references batch(batch_id),
+designation varchar(20),
+course_id int, foreign key(course_id) references course(course_id),
+work_exp varchar(20),
+phone varchar(10)
+);
+
+create table learner(
+learner_id int primary key, 
+user_id int,
+learner_name varchar(35),
+batch_id int,
+course_id int,
+mentor_id int,
+phone varchar(10),
+foreign key(user_id) references users(user_id),
+foreign key(batch_id) references batch(batch_id),
+foreign key(course_id) references course(course_id),
+foreign key(mentor_id) references mentor(mentor_id)
+);
+
+create table topics(
+topic_id int primary key,
+topic_name varchar(30),
+topic_description varchar(150),
+mentor_id int,
+foreign key(mentor_id) references mentor(mentor_id)
+);
+
+create table task(
+task_id int primary key,
+task_name varchar(50),
+task_description varchar(250),
+topic_id int, 
+foreign key(topic_id) references topics(topic_id),
+task_link_submission varchar(75)
+);
+
+create table attendance(
+attendance_id int primary key,
+learner_id int,
+course_id int,
+topic_id int,
+attendance_status varchar(20),
+foreign key(learner_id) references learner(learner_id),
+foreign key(course_id) references course(course_id),
+foreign key(topic_id) references topics(topic_id)
+);
+
+create table queries(
+query_id int primary key,
+topic_id int,
+query_description varchar(250),
+learner_id int,
+mentor_id int,
+foreign key(topic_id) references topics(topic_id),
+foreign key(learner_id) references learner(learner_id),
+foreign key(mentor_id) references mentor(mentor_id)
+);
